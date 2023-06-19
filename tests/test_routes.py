@@ -39,7 +39,6 @@ class TestAccountService(TestCase):
         app.logger.setLevel(logging.CRITICAL)
         init_db(app)
         talisman.force_https = False
-        
 
     @classmethod
     def tearDownClass(cls):
@@ -128,16 +127,16 @@ class TestAccountService(TestCase):
             content_type="test/html"
         )
         self.assertEqual(response.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
-        
+
     def test_method_not_allowed(self):
         """It should not allow an illegal method call"""
         resp = self.client.delete(BASE_URL)
         self.assertEqual(resp.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
-    
+
     # ADD YOUR TEST CASES HERE ...
 
-    #read an account on services
-    
+    # Read an account on services
+
     def test_get_account(self):
         """It should Read a single Account"""
         account = self._create_accounts(1)[0]
@@ -153,7 +152,7 @@ class TestAccountService(TestCase):
         resp = self.client.get(f"{BASE_URL}/0")
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
-    #update account on service
+    # Update account on service
 
     def test_update_account(self):
         """It should Update an existing Account"""
@@ -169,7 +168,7 @@ class TestAccountService(TestCase):
         updated_account = resp.get_json()
         self.assertEqual(updated_account["name"], "Something Known")
 
-    #delete account on service
+    # Delete account on service
 
     def test_delete_account(self):
         """It should Delete an Account"""
@@ -178,8 +177,7 @@ class TestAccountService(TestCase):
         self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
 
 
-    #list account on service
-    
+    # List account on service
     def test_get_account_list(self):
         self._create_accounts(5)
         resp = self.client.get(BASE_URL)
@@ -187,7 +185,7 @@ class TestAccountService(TestCase):
         data = resp.get_json()
         self.assertEqual(len(data), 5)
 
-    #Flask-talisman
+    # Flask-talisman
 
     def test_security_headers(self):
         """It should return security headers"""
@@ -203,7 +201,7 @@ class TestAccountService(TestCase):
         for key, value in headers.items():
             self.assertEqual(response.headers.get(key), value)
 
-    #add CORS policies
+    # Add CORS policies
 
     def test_cors_security(self):
         """It should return a CORS header"""
